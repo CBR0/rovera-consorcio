@@ -26,7 +26,7 @@ export default function LoginPage() {
 
           <div className="text-center">
             <h2 className="mt-6 text-3xl font-bold tracking-tight text-gray-900">
-              Entre na Rovera
+              Entre na <span className="font-display text-4xl">rovera</span>
             </h2>
             <p className="mt-2 text-sm text-gray-600">
               Escolha como deseja simular seu consórcio
@@ -51,7 +51,14 @@ export default function LoginPage() {
               Continuar com GitHub
             </button>
 
-            <div className="relative">
+            <p className="text-xs text-center text-gray-500 mt-4">
+              Ao acessar, você concorda com nossos{" "}
+              <a href="#" className="text-gray-700 underline hover:text-gray-900">
+                Termos de Uso
+              </a>
+            </p>
+
+            {/* <div className="relative">
               <div className="absolute inset-0 flex items-center">
                 <div className="w-full border-t border-gray-300" />
               </div>
@@ -66,7 +73,7 @@ export default function LoginPage() {
             >
               <MdOutlineEmail className="h-6 w-6 text-gray-500" />
               Entrar com E-mail
-            </button>
+            </button> */}
           </div>
         </div>
       </div>
