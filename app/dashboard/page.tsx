@@ -17,23 +17,22 @@ export default async function Dashboard() {
         <LogoutButton />
       </div>
       <div className="w-full max-w-4xl">
-        <div className="mb-8">
+        <div className="mb-16">
           {/* <h1 className="text-4xl font-bold font-display tracking-wide">Simular Consórcio</h1> */}
         </div>
 
         <div className="flex flex-col items-center">
-          <div className="text-center">
+          <div className="flex items-center gap-4 mb-6">
             {session.user?.image && (
               <Image
                 src={session.user.image}
                 alt="Foto de perfil"
-                width={72}
-                height={72}
-                className="rounded-full mx-auto mb-4"
+                width={48}
+                height={48}
+                className="rounded-full"
               />
             )}
-            <h2 className="text-2xl font-bold mb-2 text-white">Bem-vindo, {session.user?.name}!</h2>
-            {/* <p className="text-lg text-gray-300">Email: {session.user?.email}</p> */}
+            <h2 className="text-xl font-bold text-white"><span className="">Bem-vindo!</span> <br/>{session.user?.name}!</h2>
           </div>
 
           <div>

@@ -275,7 +275,7 @@ export default function SimulationForm({ initialNome = "", initialEmail = "" }: 
 
       <button
         type="submit"
-        className="group flex items-center justify-center gap-3 px-8 py-3 rounded-[10px] h-[40px] -skew-x-12 border border-rovera-primary text-rovera-primary tracking-wider hover:bg-rovera-primary hover:text-black transition-all duration-300 w-full font-display text-xl"
+        className="group flex items-center justify-center gap-3 px-8 py-3 rounded-[10px] h-[40px] -skew-x-12 border border-rovera-primary text-rovera-primary tracking-wider hover:bg-rovera-primary hover:text-black transition-all duration-300 w-full font-display text-md md:text-xl"
       >
         <span className="skew-x-12">simular agora</span>
         <svg
