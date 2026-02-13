@@ -15,14 +15,19 @@ export default function Hero() {
 
                 <h2 className="font-display text-[60px] sm:text-[80px] md:text-[80px] lg:text-[100px] xl:text-[146px] leading-none font-bold uppercase select-none bg-gradient-to-b from-[#ffffff] to-[#525252] bg-clip-text via-[#525252] from-40% via-80% text-transparent  tracking-tight">O SEU</h2>
 
-                <h2 className="mb-5 font-display text-[30px] sm:text-[45px] md:text-[60px] lg:text-[70px] xl:text-[75px] leading-none text-white tracking-widest font-bold uppercase select-none bg-gradient-to-b from-gray-200 to-gray-800 bg-clip-text text-transparent opacity-90 flex justify-center gap-3 lg:gap-[300px] xl:gap-[400px]">
-                    <span className="tracking-tight relative left-0 xl:left-30 bg-gradient-to-r from-[#ffffff] to-[#525252] bg-clip-text text-transparent">FUTURO</span><span className="bg-gradient-to-l from-[#ffffff] to-[#525252] bg-clip-text text-transparent tracking-tight relative">CHEGOU</span>
-                </h2>
-
-                <div className="absolute w-full h-[1px] bg-white opacity-33" />
+                <div className="flex justify-center gap-6 sm:gap-12 md:gap-24 lg:gap-[300px] xl:gap-[400px] items-start">
+                    <div className="relative translate-x-4 sm:translate-x-8 md:translate-x-12 lg:translate-x-16 xl:translate-x-20">
+                        <span className="font-display text-[30px] sm:text-[45px] md:text-[60px] lg:text-[70px] xl:text-[75px] leading-none tracking-widest font-bold uppercase select-none bg-gradient-to-r from-[#ffffff] to-[#525252] bg-clip-text text-transparent">FUTURO</span>
+                        <div className="absolute left-0 -bottom-2 w-full h-[1px] bg-white opacity-33" />
+                    </div>
+                    <div className="relative">
+                        <span className="font-display text-[30px] sm:text-[45px] md:text-[60px] lg:text-[70px] xl:text-[75px] leading-none tracking-widest font-bold uppercase select-none bg-gradient-to-l from-[#ffffff] to-[#525252] bg-clip-text text-transparent">CHEGOU</span>
+                        <div className="absolute left-0 -bottom-2 w-full h-[1px] bg-white opacity-33" />
+                    </div>
+                </div>
             </div>
 
-            <div className="relative z-30 -mt-20 md:-mt-40 w-full max-w-[1200px] flex justify-center">
+            <div className="relative z-30 -mt-16 md:-mt-40 w-full max-w-[1200px] flex justify-center">
                 <div className="absolute top-[0] left-[-10%] rotate-[-45deg] md:rotate-[33.5deg] -translate-x-[5vw] -translate-y-1/2 w-[100%] h-[10%] md:w-[80%] md:h-[140px] blur-[120px] bg-[#fff]/45" />
                 {/* EFEITO DE LUZ */}
 

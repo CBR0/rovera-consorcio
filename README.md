@@ -1,36 +1,106 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Rovera Consórcio
 
-## Getting Started
+Projeto Next.js para simulação de consórcio de veículos elétricos.
 
-First, run the development server:
+
+Link para visualização: https://rovera-consorcio.vercel.app/
+
+Para visualizar os leads basta acessar [/leads](https://rovera-consorcio.vercel.app/leads).\
+Essa página é um mini gerenciador, não possui autenticação.
+
+
+## Como Rodar o Projeto
+Recomendo usar o link publicado para testar a area autenticada caso não queira configurar as variaveis de ambiente para rodar local.
+### Pré-requisitos
+- Node.js 18+
+- npm
+
+### Instalação
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Configuração
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+1. Copie o arquivo de exemplo:
+```bash
+cp .env.example .env.local
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+2. Configure as variáveis de ambiente no `.env.local`:
+```env
+# Autenticação OAuth (GitHub)
+GITHUB_ID=seu_github_id
+GITHUB_SECRET=seu_github_secret
 
-## Learn More
+# Autenticação OAuth (Google)
+GOOGLE_CLIENT_ID=seu_google_client_id
+GOOGLE_CLIENT_SECRET=seu_google_client_secret
 
-To learn more about Next.js, take a look at the following resources:
+# NextAuth
+NEXTAUTH_SECRET=gerar_uma_chave_secreta
+NEXTAUTH_URL=http://localhost:3000
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+# MongoDB (opcional, apenas para desenvolvimento local)
+MONGODB_URI=mongodb://localhost:27017/rovera-consorcio
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Executando
 
-## Deploy on Vercel
+```bash
+# Desenvolvimento
+npm run dev
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Acesse: http://localhost:3000
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+
+## Decisões Técnicas
+
+### Stack
+- **Next.js 16** com App Router
+- **Tailwind CSS v4** para estilização
+- **NextAuth v4** para autenticação OAuth (GitHub + Google)
+- **MongoDB** para persistência de dados
+
+### Estrutura de Pastas
+```
+app/                  # Next.js App Router
+├── api/              # API Routes
+│   ├── auth/         # NextAuth
+│   └── leads/        # CRUD de Leads
+├── dashboard/        # Área autenticada
+└── page.tsx          # Página principal
+
+components/           # Componentes React
+lib/                  # Utilitários (MongoDB)
+models/               # Modelos de dados
+```
+
+### Decisões de Adaptação Mobile
+
+Para conseguir manter a identidade visual, eu optei por manter o circulo maior em volta da estrutura do hero, porém, em resoluções retangulares não seria possivel manter a circunferência perfeita, então criei de uma forma que o conteúdo permaneça ao centro, o formato é retangular para manter o aspecto de conjunto.
+
+Mantive as cores de fundo do texto principal, porém o efeito de luz sobre o carro fica prejudicado pelo posicionamento centralizado ja que decidi utilizar uma posição flutuante de forma que fique bom na maioria das resoluções.
+
+Fiz um ajuste do tamanho da fonte, apenas para que o foco ainda se mantivesse na imagem e não perdesse a leitura do texto.
+
+Na tela "autenticada" optei por criar o formulário centralizado com os dados do usuário no topo para facilitar ajustes de proporção em resoluções menores.
+
+---
+
+## Trade-offs e Decisões Relevantes
+
+### Autenticação
+- **NextAuth com cookies sameSite: 'none'** - Necessário para funcionar em diferentes domínios durante desenvolvimento local
+- **Callback de redirect customizado** - Preserva a URL original após login
+
+---
+
+## Agradecimentos
+Gostaria de agradecer a oportunidade e estou muito feliz com o resultado do projeto, tive um desafio com relação ao Next.js, pois, como mencionei anteriormente tenho um forte conhecimento em Angular e acredito que consegui reaproveitar muito do conhecimento web no geral neste projeto.
+
+Muito obrigado 😊
+
