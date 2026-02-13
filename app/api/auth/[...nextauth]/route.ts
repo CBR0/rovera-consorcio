@@ -17,11 +17,8 @@ const handler = NextAuth({
     signIn: '/login',
   },
   callbacks: {
-    async redirect({ url, baseUrl }: { url: string; baseUrl: string }) {
-      if (url.startsWith('http') && !url.includes('localhost')) {
-        return url;
-      }
-      return baseUrl;
+    async redirect({ baseUrl }: { url: string; baseUrl: string }) {
+      return `${baseUrl}/dashboard`;
     }
   },
   cookies: {
