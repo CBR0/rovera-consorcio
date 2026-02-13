@@ -1,6 +1,7 @@
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import Image from "next/image";
+import Link from "next/link";
 import LogoutButton from "@/components/LogoutButton";
 import SimulationForm from "@/components/SimulationForm";
 
@@ -13,7 +14,7 @@ export default async function Dashboard() {
 
   return (
     <div className="flex min-h-screen flex-col items-center p-8 bg-rovera-black text-white relative">
-      <div className="absolute top-6 right-8">
+      <div className="absolute top-6 right-8 flex items-center gap-4">
         <LogoutButton />
       </div>
       <div className="w-full max-w-4xl">

@@ -16,6 +16,9 @@ export default function SimulationForm({ initialNome = "", initialEmail = "" }: 
     parcelas: "60",
   });
 
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<"success" | "error" | null>(null);
+
   const [touched, setTouched] = useState({
     nome: false,
     email: false,
@@ -114,9 +117,8 @@ export default function SimulationForm({ initialNome = "", initialEmail = "" }: 
     setErrors({ ...errors, [field]: error });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Marcar todos os campos como touched
     setTouched({
       nome: true,
       email: true,
@@ -128,15 +130,50 @@ export default function SimulationForm({ initialNome = "", initialEmail = "" }: 
       return;
     }
 
-    // Converter valores formatados para números antes de enviar
+    setIsSubmitting(true);
+    setSubmitStatus(null);
+
     const submissionData = {
-      ...formData,
+      nome: formData.nome,
+      email: formData.email,
       telefone: formData.telefone.replace(/\D/g, ""),
-      valorDesejado: formData.valorDesejado.replace(/\D/g, ""),
+      valorDesejado: parseInt(formData.valorDesejado.replace(/\D/g, ""), 10),
+      parcelas: parseInt(formData.parcelas, 10),
     };
-    console.log("Dados do formulário:", submissionData);
-    alert("Simulação enviada com sucesso! (Dados no console)");
-    // Aqui futuramente será a conexão com o banco de dados
+
+    try {
+      const response = await fetch("/api/leads", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(submissionData),
+      });
+
+      if (!response.ok) {
+        throw new Error("Erro ao salvar lead");
+      }
+
+      setSubmitStatus("success");
+      setFormData({
+        nome: "",
+        email: "",
+        telefone: "",
+        valorDesejado: "",
+        parcelas: "60",
+      });
+      setTouched({
+        nome: false,
+        email: false,
+        telefone: false,
+        valorDesejado: false,
+      });
+    } catch (error) {
+      console.error("Erro ao enviar formulário:", error);
+      setSubmitStatus("error");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -275,20 +312,29 @@ export default function SimulationForm({ initialNome = "", initialEmail = "" }: 
 
       <button
         type="submit"
-        className="group flex items-center justify-center gap-3 px-8 py-3 rounded-[10px] h-[40px] -skew-x-12 border border-rovera-primary text-rovera-primary tracking-wider hover:bg-rovera-primary hover:text-black transition-all duration-300 w-full font-display text-md md:text-xl"
+        disabled={isSubmitting}
+        className="group flex items-center justify-center gap-3 px-8 py-3 rounded-[10px] h-[40px] -skew-x-12 border border-rovera-primary text-rovera-primary tracking-wider hover:bg-rovera-primary hover:text-black transition-all duration-300 w-full font-display text-md md:text-xl disabled:opacity-50 disabled:cursor-not-allowed"
       >
-        <span className="skew-x-12">simular agora</span>
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          strokeWidth={1.5}
-          stroke="currentColor"
-          className="w-5 h-5 group-hover:translate-x-1 transition-transform skew-x-12"
-        >
-          <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
-        </svg>
+        <span className="skew-x-12">
+          {isSubmitting ? "Enviando..." : "simular agora"}
+        </span>
+        {!isSubmitting && (
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={1.5}
+            stroke="currentColor"
+            className="w-5 h-5 group-hover:translate-x-1 transition-transform skew-x-12"
+          />
+        )}
       </button>
+      {submitStatus === "success" && (
+        <p className="text-green-500 text-center mt-4">Simulação enviada com sucesso!</p>
+      )}
+      {submitStatus === "error" && (
+        <p className="text-red-500 text-center mt-4">Erro ao enviar simulação. Tente novamente.</p>
+      )}
     </form>
   );
 }
