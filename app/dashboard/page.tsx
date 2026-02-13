@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 import LogoutButton from "@/components/LogoutButton";
 import SimulationForm, { SimulationResult } from "@/components/SimulationForm";
@@ -29,8 +30,16 @@ const formatPhone = (phone: string): string => {
 
 export default function Dashboard() {
   const { data: session, status } = useSession();
+  const router = useRouter();
   const [simulationResult, setSimulationResult] = useState<SimulationResult | null>(null);
   const [loadingSimulation, setLoadingSimulation] = useState(true);
+
+  useEffect(() => {
+    console.log("Status de autenticação:", status);
+    if (status === "unauthenticated") {
+      router.push("/");
+    }
+  }, [status, router]);
 
   useEffect(() => {
     async function fetchLastSimulation() {
@@ -68,10 +77,6 @@ export default function Dashboard() {
         <p className="text-xl">Carregando...</p>
       </div>
     );
-  }
-
-  if (status === "unauthenticated") {
-    return null;
   }
 
   const formatCurrency = (value: number) => {

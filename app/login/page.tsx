@@ -2,22 +2,31 @@
 
 import { signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { FaGithub } from "react-icons/fa";
-import { MdOutlineEmail } from "react-icons/md";
-import Header from "@/components/Header";
 
 export default function LoginPage() {
   const { data: session, status } = useSession();
   const router = useRouter();
 
-  const handleLogin = (provider: string) => {
+  useEffect(() => {
     if (status === "authenticated") {
       router.push("/dashboard");
-    } else {
-      signIn(provider, { callbackUrl: "/dashboard" });
     }
+  }, [status, router]);
+
+  const handleLogin = (provider: string) => {
+    signIn(provider, { callbackUrl: "/dashboard" });
   };
+
+  if (status === "loading" || status === "authenticated") {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-rovera-black">
+        <p className="text-white">Carregando...</p>
+      </div>
+    );
+  }
 
   return (
     <>

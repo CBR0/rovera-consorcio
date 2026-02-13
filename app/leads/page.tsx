@@ -46,13 +46,6 @@ export default function LeadsPage() {
   const initialLoadDone = useRef(false);
 
   useEffect(() => {
-    if (status === "unauthenticated") {
-      router.push("/");
-    }
-  }, [status, router]);
-
-  useEffect(() => {
-    if (status !== "authenticated") return;
 
     async function fetchLeads() {
       setLoading(true);
@@ -136,9 +129,6 @@ export default function LeadsPage() {
     );
   }
 
-  if (status === "unauthenticated") {
-    return null;
-  }
 
   return (
     <div className="min-h-screen bg-rovera-black text-white p-8 mt-16">

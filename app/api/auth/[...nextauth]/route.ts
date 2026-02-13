@@ -1,4 +1,4 @@
-import NextAuth from "next-auth";
+import NextAuth, { Session } from "next-auth";
 import GithubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
 
@@ -17,20 +17,9 @@ const handler = NextAuth({
     signIn: '/login',
   },
   callbacks: {
-    async redirect({ baseUrl }: { url: string; baseUrl: string }) {
-      return `${baseUrl}/dashboard`;
+    async session({ session }: { session: Session }) {
+      return session;
     }
-  },
-  cookies: {
-    sessionToken: {
-      name: `next-auth.session-token`,
-      options: {
-        httpOnly: true,
-        sameSite: 'none',
-        secure: process.env.NODE_ENV === 'production',
-        path: '/',
-      },
-    },
   },
 });
 
