@@ -5,9 +5,24 @@ import { useState } from "react";
 interface SimulationFormProps {
   initialNome?: string;
   initialEmail?: string;
+  onSuccess?: (data: SimulationResult) => void;
 }
 
-export default function SimulationForm({ initialNome = "", initialEmail = "" }: SimulationFormProps) {
+export interface SimulationResult {
+  nome: string;
+  email: string;
+  telefone: string;
+  valorDesejado: number;
+  parcelas: number;
+  valorParcela: number;
+  valorTotal: number;
+}
+
+export default function SimulationForm({ 
+  initialNome = "", 
+  initialEmail = "",
+  onSuccess 
+}: SimulationFormProps) {
   const [formData, setFormData] = useState({
     nome: initialNome,
     email: initialEmail,
@@ -133,12 +148,21 @@ export default function SimulationForm({ initialNome = "", initialEmail = "" }: 
     setIsSubmitting(true);
     setSubmitStatus(null);
 
+    const valorDesejadoNum = parseInt(formData.valorDesejado.replace(/\D/g, ""), 10);
+    const parcelasNum = parseInt(formData.parcelas, 10);
+    const taxaJuros = 0.008;
+    const valorParcela = Math.round(valorDesejadoNum * (taxaJuros * Math.pow(1 + taxaJuros, parcelasNum)) / (Math.pow(1 + taxaJuros, parcelasNum) - 1));
+    const valorTotal = valorParcela * parcelasNum;
+
     const submissionData = {
       nome: formData.nome,
       email: formData.email,
       telefone: formData.telefone.replace(/\D/g, ""),
-      valorDesejado: parseInt(formData.valorDesejado.replace(/\D/g, ""), 10),
-      parcelas: parseInt(formData.parcelas, 10),
+      valorDesejado: valorDesejadoNum,
+      parcelas: parcelasNum,
+      valorParcela,
+      valorTotal,
+      userEmail: formData.email,
     };
 
     try {
@@ -154,20 +178,37 @@ export default function SimulationForm({ initialNome = "", initialEmail = "" }: 
         throw new Error("Erro ao salvar lead");
       }
 
+      const valorDesejadoNum = submissionData.valorDesejado;
+      const parcelasNum = submissionData.parcelas;
+      const taxaJuros = 0.008; // 0.8% ao mês mockado
+      const valorParcela = Math.round(valorDesejadoNum * (taxaJuros * Math.pow(1 + taxaJuros, parcelasNum)) / (Math.pow(1 + taxaJuros, parcelasNum) - 1));
+      const valorTotal = valorParcela * parcelasNum;
+
+      const result: SimulationResult = {
+        ...submissionData,
+        valorParcela,
+        valorTotal,
+      };
+
       setSubmitStatus("success");
-      setFormData({
-        nome: "",
-        email: "",
-        telefone: "",
-        valorDesejado: "",
-        parcelas: "60",
-      });
-      setTouched({
-        nome: false,
-        email: false,
-        telefone: false,
-        valorDesejado: false,
-      });
+      
+      if (onSuccess) {
+        onSuccess(result);
+      } else {
+        setFormData({
+          nome: initialNome,
+          email: initialEmail,
+          telefone: "",
+          valorDesejado: "",
+          parcelas: "60",
+        });
+        setTouched({
+          nome: false,
+          email: false,
+          telefone: false,
+          valorDesejado: false,
+        });
+      }
     } catch (error) {
       console.error("Erro ao enviar formulário:", error);
       setSubmitStatus("error");

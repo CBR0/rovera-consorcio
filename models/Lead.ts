@@ -7,6 +7,9 @@ export interface Lead {
   telefone: string;
   valorDesejado: number;
   parcelas: number;
+  valorParcela?: number;
+  valorTotal?: number;
+  userEmail?: string;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -17,6 +20,9 @@ export interface LeadInput {
   telefone: string;
   valorDesejado: number;
   parcelas: number;
+  valorParcela?: number;
+  valorTotal?: number;
+  userEmail?: string;
 }
 
 let leadCollection: Collection<Lead> | null = null;
